@@ -1,0 +1,172 @@
+﻿Build1=Default,b4a.sqlitelight1
+File1=Add User Male_96px.png
+File10=Depot.bal
+File11=Emprunt.bal
+File12=forgetmdp.bal
+File13=GererAdh.bal
+File14=gererBook.bal
+File15=Home_48px.png
+File16=icons8-book-96.png
+File17=icons8-delivery-person-96.png
+File18=icons8-livres-128.png
+File19=Inscription.bal
+File2=addAdhe.bal
+File20=Main.bal
+File21=Return_96px.png
+File3=addBook.bal
+File4=background.jpg
+File5=Books_96px.png
+File6=Borrow Book_96px.png
+File7=Check Book_96px.png
+File8=Connexion.bal
+File9=Dashboard.bal
+FileGroup1=Default Group
+FileGroup10=Default Group
+FileGroup11=Default Group
+FileGroup12=Default Group
+FileGroup13=Default Group
+FileGroup14=Default Group
+FileGroup15=Default Group
+FileGroup16=Default Group
+FileGroup17=Default Group
+FileGroup18=Default Group
+FileGroup19=Default Group
+FileGroup2=Default Group
+FileGroup20=Default Group
+FileGroup21=Default Group
+FileGroup3=Default Group
+FileGroup4=Default Group
+FileGroup5=Default Group
+FileGroup6=Default Group
+FileGroup7=Default Group
+FileGroup8=Default Group
+FileGroup9=Default Group
+Group=Default Group
+IconFile=
+Library1=core
+Library2=sql
+ManifestCode='This code will be applied to the manifest file during compilation.~\n~'You do not need to modify it in most cases.~\n~'See this link for for more information: http://www.basic4ppc.com/forum/showthread.php?p=78136~\n~AddManifestText(~\n~<uses-sdk android:minSdkVersion="4" android:targetSdkVersion="14"/>~\n~<supports-screens android:largeScreens="true" ~\n~    android:normalScreens="true" ~\n~    android:smallScreens="true" ~\n~    android:anyDensity="true"/>)~\n~SetApplicationAttribute(android:icon, "@drawable/icon")~\n~SetApplicationAttribute(android:label, "$LABEL$")~\n~'End of default text.~\n~
+Module1=addBook
+Module10=Dashboard
+Module2=addAdhe
+Module3=Emprunt
+Module4=Depot
+Module5=forgetmdp
+Module6=GererAdh
+Module7=gererBook
+Module8=Inscription
+Module9=Connexion
+NumberOfFiles=21
+NumberOfLibraries=2
+NumberOfModules=10
+Version=8.8
+@EndOfDesignText@
+#Region  Project Attributes 
+	#ApplicationLabel: GBiblio
+	#VersionCode: 1
+	#VersionName: 
+	'SupportedOrientations possible values: unspecified, landscape or portrait.
+	#SupportedOrientations: unspecified
+	#CanInstallToExternalStorage: False
+#End Region
+
+#Region  Activity Attributes 
+	#FullScreen: False
+	#IncludeTitle: True
+#End Region
+
+
+Sub Process_Globals
+	Dim SQL1 As SQL
+	Dim timer As Timer
+End Sub
+
+Sub Globals
+
+End Sub
+
+Sub Activity_Create(FirstTime As Boolean)
+	If FirstTime Then
+		'check if the database already exists
+		If File.Exists(File.DirInternal, "gbiblio.db") = False Then
+			'if not, initialize it 
+			SQL1.Initialize(File.DirInternal, "gbiblio.db", True)
+			'and create it
+			CreateTable
+		Else
+			'if yes, initialize it
+			SQL1.Initialize(File.DirInternal, "gbiblio.db", True)
+		End If
+	End If
+	
+	Activity.LoadLayout("Main")
+
+	timer.Initialize("timer", 2000)
+	timer.Enabled = True
+			
+End Sub
+
+Sub Activity_Resume
+
+End Sub
+
+Sub Activity_Pause (UserClosed As Boolean)
+	If UserClosed Then
+		SQL1.Close		
+	End If
+End Sub
+
+Sub CreateTable
+	Dim Query, Query2, Query3 , Query4 , Query5, Q As String
+	
+	Query = "CREATE TABLE bibliothecaire (email TEXT PRIMARY KEY, nom TEXT, codeT TEXT, tel TEXT, mdp TEXT)"
+	SQL1.ExecNonQuery(Query)
+	
+	Query2 = "INSERT INTO bibliothecaire VALUES ('soumdiakite182@gmail.com', 'DIAKITE SOUMAILA', 'mister_prog@', '67988610/56058826','mister_prog@')"
+	SQL1.ExecNonQuery(Query2)
+	
+	Query3 = "CREATE TABLE livre (codeLivre TEXT PRIMARY KEY, nomAuteur TEXT, titreLivre TEXT, datePub DATE, nbreExple INT, resume TEXT)"
+	SQL1.ExecNonQuery(Query3)
+	
+	Query4 = "CREATE TABLE adherant (email TEXT PRIMARY KEY, nomAdh TEXT, prenomAdh TEXT,datenaiss DATE, adresse TEXT, tel TEXT)"
+	SQL1.ExecNonQuery(Query4)
+	
+	Query5 = "CREATE TABLE transactionLivre (id INT PRIMARY KEY, codeLivre TEXT, emailAdh TEXT, dateEmprunt DATETIME, dateDepot DATETIME DEFAULT NULL)"
+	SQL1.ExecNonQuery(Query5)
+	
+	'For the test
+	Q = "INSERT INTO adherant VALUES('jaredbruce@gmail.com','JARED','BRUCE','2012-05-05','1866 John Prairie Kimfort, CO 71609','213.720.6303')"
+	SQL1.ExecNonQuery(Q)
+	Q = "INSERT INTO adherant VALUES('samantha68@gmail.com','SAMANTHA','ALEHOU','1999-12-05','49441 Powell Mountain Suite 495 Richardsonshire, HI 61302','(018)768-8493')"
+	SQL1.ExecNonQuery(Q)
+	Q = "INSERT INTO adherant VALUES('irivera@foster.org','KIMBERLY','PETERS','2003-03-13','5770 Lori Lock Timfort, LA 60831','+1-550-322-6595')"
+	SQL1.ExecNonQuery(Q)
+	Q = "INSERT INTO adherant VALUES('ryan46@yahoo.com','JENNIFER','GONZALEZ','1997-12-14','919 Henderson Loop Smithborough, WA 58397','(557)823-6715')"
+	SQL1.ExecNonQuery(Q)
+	Q = "INSERT INTO adherant VALUES('micheal94@hotmail.com','JOANNA','STONE','1998-12-01','788 Perez Groves Smithfort, KS 45891','150-288-9842x48354')"
+	SQL1.ExecNonQuery(Q)
+	Q = "INSERT INTO adherant VALUES('lewistiffany@gmail.com','ROBERT','JOSEPH','2000-01-01','82921 Hughes Station West Melanieberg, MO 06736','814.422.2485')"
+	SQL1.ExecNonQuery(Q)
+	Q = "INSERT INTO adherant VALUES('nicholas36@gmail.com','BROOKE','HOOPER','1999-11-26','86390 Jennifer Loaf Wendytown, CO 98757','105.279.1298')"
+	SQL1.ExecNonQuery(Q)
+	
+	Q = "INSERT INTO livre VALUES('1','Everina','CRIS, LAURENT GAUDE',' 2001-08-12', 3,'Cris est un roman polyphonique publié en 2001. Il se déroule pendant la Première Guerre Mondiale et fait entendre les voix des hommes du front. I- La relève de la vieille garde. Jules quitte le front')"
+	SQL1.ExecNonQuery(Q)
+	Q = "INSERT INTO livre VALUES('2','Molière','Dom Juan','2007-03-23',4,'Comme Tartuffe, Dom Juan est une pièce on ne peut comprendre en dehors du contexte politique et religieux du début du règne de Louis XIV.')"
+	SQL1.ExecNonQuery(Q)
+	Q = "INSERT INTO livre VALUES('3','Rousseau','Les Confessions','2007-05-09',2,'A la fin de année 1761, éditeur hollandais de Rousseau fait savoir à écrivain son désir de mettre en tête de ses œuvres complètes une vie de auteur. Rousseau lui répond en janvier 1762 qu une telle entreprise compromettrait trop de monde.')"
+	SQL1.ExecNonQuery(Q)
+	Q = "INSERT INTO livre VALUES('4','Voltaire','Candide','2007-03-21',5,'Candide est un conte en trente chapitres numérotés et titrés, publié à Genève et diffusé en février 1759, simultanément à Genève, Paris et Amsterdam. En 1761, une édition augmentée paraît à Paris.')"
+	SQL1.ExecNonQuery(Q)
+	
+	
+	
+End Sub
+
+Sub timer_Tick
+	
+	timer.Enabled = False
+	StartActivity(Connexion)
+	
+End Sub
+
